@@ -118,15 +118,23 @@ The key insight is that LLMs are better at working with code patterns they've se
 - **Value Assignment:** Using Python's literal value assignment is more natural for LLMs than JSON key-value pairs
 - **Static Analysis:** The code output can be parsed and validated using standard Python tooling
 
-This approach solves a fundamental issue in the current tool use ecosystem. The traditional flow involves:
-1. Writing Python functions with decorators
-2. Serializing these to JSON schemas for the API
-3. Having the LLM generate JSON
-4. Converting JSON function calls into Python code for execution
+This approach fixes a key problem with how tools are currently used. The traditional way takes something Python does naturally - calling functions - and forces it through an awkward and unnatural process:
 
-Instead, we maintain code as the primary interface throughout the pipeline. While we still handle JSON for API compatibility, the LLM itself works purely with Python code patterns, eliminating unnecessary transformations and leveraging the model's training data more effectively.
+1. Start with pure, readable Python functions
+2. Convert these into static JSON schemas (losing the "function" essence)
+3. Have the LLM generate rigid JSON structures for executing actions (when it's trained on billions of lines of text called "code" that actually executes actions and is the way actions have been executed on computers for decades)
+4. Parse the JSON and execute relevant code
 
-This approach leverages the LLM's training on code patterns while maintaining a controlled, analyzable structure for tool use.
+The JSON approach was chosen for good reason - JSON's static nature makes it easy to validate and parse safely. But this creates an unnecessary translation layer that fights against both Python's strengths and the LLM's training. Function calling is a fundamental programming concept that Python handles beautifully with a concise and elegant syntax, while JSON is incredibly verbose and meant for static data representation.
+
+Our approach delivers the best of both worlds. Like JSON, Python code can be parsed and validated through static analysis. But crucially, it uses the natural function-calling patterns that LLMs have encountered billions of times during their pre-training phase. Pydantic's type definitions – increasingly common in modern Python – serve as a familiar alternative to JSON schemas while maintaining rigor.
+
+This works because LLMs speak code natively. Respecting function signatures and Pydantic data shapes is a core skill, baked into their training through endless examples of Python code. JSON schemas for function calling, however, are artificial constructs rarely seen in public internet training data. They force models into unnatural patterns – rigid structures the AI has only encountered during post-training. JSON tool calling relies on carefully balanced fine-tuning artifacts, while Python generation builds on the model's core unsupervised competency - manipulating actual code patterns seen in billions of pretraining examples.
+
+By using Python as nature intended, we align with the model's inherent understanding of executable logic and data shapes rather than forcing unnatural constraints. It also allows to use function calling on any model that can generate python code, whether it has been trained for tool use or not.
+
+(Note: For convenience, we currently execute the code directly without static analysis or parsing. Adding these safety features remains a future enhancement.)
+
 ## API Compatibility Benefits
 
 By maintaining compatibility with OpenAI's tool use API format, this project seamlessly integrates with existing AI tooling:
