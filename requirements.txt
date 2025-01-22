@@ -1,0 +1,10 @@
+flask>=2.3.3
+openai>=1.59.9
+pydantic>=2.10.3
+nbformat>=5.9.2
+nbconvert>=7.14.2
+datamodel-code-generator>=0.26.5
+astor>=0.8.1
+isort>=5.13.2
+caseconverter>=1.0.0
+python-dotenv>=1.0.1

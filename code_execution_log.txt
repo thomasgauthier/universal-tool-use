@@ -1,0 +1,399 @@
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=True,
+    missing_info=None,
+    clarifying_questions=None,
+    parsed_request="Automate checking CPA against target in Google Sheets and send Slack alert if exceeded."
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=False,
+    missing_info=[
+        "Integration method between Canva and DocuSign (e.g., API, Zapier, etc.)",
+        "File format or specific naming convention for the press release in Canva",
+        "How the workflow identifies the correct press release in Canva"
+    ],
+    clarifying_questions=[
+        "What method would you like to use to integrate Canva with DocuSign (e.g., API, Zapier, etc.)?",
+        "Is there a specific naming convention or format for the press release in Canva that should trigger the workflow?",
+        "How should the workflow identify the correct press release in Canva (e.g., specific folder, tag, or naming convention)?"
+    ]
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List
+
+from pydantic import BaseModel, Field
+
+
+class AppIdsResult(BaseModel):
+    app_ids: List[str] = Field(..., description=
+        'List of app IDs required for this workflow', title='App Ids')
+
+
+def final_result(args: AppIdsResult):
+    return args
+
+
+final_result(AppIdsResult(app_ids=["googlebigquery", "googlesheets", "slack"])).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class ActionRequirement(BaseModel):
+    app_id: str = Field(..., description='ID of the required application',
+        title='App Id')
+    action_name: str = Field(..., description='Name of the required action',
+        title='Action Name')
+    purpose: str = Field(..., description=
+        'Why this action is needed in the workflow', title='Purpose')
+
+
+class ActionFeasibilityResult(BaseModel):
+    feasible: bool = Field(..., description=
+        'Whether request can be implemented with available actions', title=
+        'Feasible')
+    required_actions: Optional[List[ActionRequirement]] = Field(None,
+        description='List of required actions if feasible', title=
+        'Required Actions')
+    infeasible_reason: Optional[str] = Field(None, description=
+        'Detailed explanation if request is not feasible', title=
+        'Infeasible Reason')
+
+
+def final_result(args: ActionFeasibilityResult):
+    return args
+
+
+final_result(
+    ActionFeasibilityResult(
+        feasible=True,
+        required_actions=[
+            ActionRequirement(
+                app_id="googlebigquery",
+                action_name="GOOGLEBIGQUERY_QUERY",
+                purpose="Run a SQL query to retrieve the CPA data from BigQuery."
+            )
+        ]
+    )
+).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class ActionRequirement(BaseModel):
+    app_id: str = Field(..., description='ID of the required application',
+        title='App Id')
+    action_name: str = Field(..., description='Name of the required action',
+        title='Action Name')
+    purpose: str = Field(..., description=
+        'Why this action is needed in the workflow', title='Purpose')
+
+
+class ActionFeasibilityResult(BaseModel):
+    feasible: bool = Field(..., description=
+        'Whether request can be implemented with available actions', title=
+        'Feasible')
+    required_actions: Optional[List[ActionRequirement]] = Field(None,
+        description='List of required actions if feasible', title=
+        'Required Actions')
+    infeasible_reason: Optional[str] = Field(None, description=
+        'Detailed explanation if request is not feasible', title=
+        'Infeasible Reason')
+
+
+def final_result(args: ActionFeasibilityResult):
+    return args
+
+
+final_result(
+    ActionFeasibilityResult(
+        feasible=True,
+        required_actions=[
+            ActionRequirement(
+                app_id='googlesheets',
+                action_name='GOOGLESHEETS_BATCH_GET',
+                purpose='Retrieve CPA and target values from the spreadsheet for comparison.'
+            ),
+            ActionRequirement(
+                app_id='googlesheets',
+                action_name='GOOGLESHEETS_BATCH_UPDATE',
+                purpose='Update the spreadsheet with new CPA data or indicate when the target is exceeded.'
+            )
+        ]
+    )
+).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=False,
+    missing_info=[
+        "Specific course identifiers or names in Blackboard and Canvas",
+        "How to handle versioning or conflicts between different platforms"
+    ],
+    clarifying_questions=[
+        "Could you provide the specific course names or IDs in Blackboard and Canvas that need to be synced?",
+        "How should conflicts or version differences between platforms be handled?"
+    ]
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=False,
+    missing_info=[
+        "Mechanism for determining interpreter availability",
+        "Maintenance process for the interpreter contact list"
+    ],
+    clarifying_questions=[
+        "How should interpreter availability be determined (e.g., first-come, first-served; specific interpreters for specific languages)?",
+        "How is the interpreter contact list maintained and updated?"
+    ]
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=False,
+    missing_info=[
+        "Criteria for identifying family communications in Gmail and Teams",
+        "Structure or format for the Notion page"
+    ],
+    clarifying_questions=[
+        "What criteria should be used to identify family communications in Gmail and Teams?",
+        "How should the information be organized in the Notion page?"
+    ]
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List, Optional
+
+from pydantic import BaseModel, Field
+
+
+class RequestCompleteness(BaseModel):
+    is_complete: bool = Field(..., description=
+        'Whether request has all needed information', title='Is Complete')
+    missing_info: Optional[List[str]] = Field(None, description=
+        'List of missing information pieces if incomplete', title=
+        'Missing Info')
+    clarifying_questions: Optional[List[str]] = Field(None, description=
+        'Questions to ask user if more information needed', title=
+        'Clarifying Questions')
+    parsed_request: Optional[str] = Field(None, description=
+        'Clean version of request once complete', title='Parsed Request')
+
+
+def final_result(args: RequestCompleteness):
+    return args
+
+
+final_result(RequestCompleteness(
+    is_complete=True,
+    missing_info=None,
+    clarifying_questions=None,
+    parsed_request="Automate checking Google Sheets for overdue deliveries and send Teams message if more than 2 are overdue."
+)).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
+
+
+###### CODE TO EXECUTE ######
+
+from __future__ import annotations
+
+from typing import List
+
+from pydantic import BaseModel, Field
+
+
+class AppIdsResult(BaseModel):
+    app_ids: List[str] = Field(..., description=
+        'List of app IDs required for this workflow', title='App Ids')
+
+
+def final_result(args: AppIdsResult):
+    return args
+
+
+final_result(AppIdsResult(app_ids=["googlesheets", "microsoft_teams"])).model_dump_json()
+
+###### /CODE TO EXECUTE ######
+
