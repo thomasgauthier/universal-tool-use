@@ -99,17 +99,33 @@ def chat():
 
 After analyzing the user request that will follow, you can call any of {{{get_fn_names(chat.tools)}}} function with your evaluation. For each function call you decide to make, format your response as a Python code block using triple backticks containing the function call. Be logical and smart about which function call you make. Each function call you make will be executed and the result shown to you in this thread. It is up to you to call the functions in any order to best accomplish the task you've been given. If any function call you want to make necessitates the use of an output of another function, you can call the other function first and only that one. Or you can call many functions to get results in parallel in next message in this thread. The functions you decide to call now will have an impact on the planning and orchestration of the task. Take time to reflect on proper order of function calls and only do the ones that don't have unawaited dependencies.
 
+DO NOT MAKE UP FIELDS NOT DEFINED IN THE MODEL.
+DO NOT ASSIGN VARIABLES, DO NOT PRINT, DO NOT DO ANYTHING WITH SIDE EFFECTS. PURE CODE ONLY. SIMPLY CALL THE FUNCTIONS WITH LITTERALS WITHOUT CAPTURING THE OUTPUT. EXAMPLES BELOW.
+
 Function call syntax and output formatting examples:
-{dblnl.join(snippets)}"""
+{dblnl.join(snippets)}
+
+The arguments you call the functions with must be relevant with the provided context."""
     
     try:
         # Prepare messages with enhanced system prompt
         messages = []
+        system_message_found = False
+        
+        # Check if there's a system message and append suffix to it
         for m in chat.messages:
             content = m.content
             if m.role == "system":
                 content += f"\n\n{system_prompt_tool_suffix}"
+                system_message_found = True
             messages.append({"role": m.role, "content": content})
+        
+        # If no system message found, create one and insert at beginning
+        if not system_message_found:
+            messages.insert(0, {
+                "role": "system",
+                "content": system_prompt_tool_suffix
+            })
 
         # Make API call to underlying LLM
         params = {
@@ -155,6 +171,12 @@ Function call syntax and output formatting examples:
                 })
 
                 filled_index += 1
+
+        print("messages", messages)
+
+        print("response", response.choices[0].message.content)
+        print("---")
+        print("tool_calls", tool_calls)
 
         # Add tool calls to response
         response.choices[0].message.tool_calls = tool_calls
