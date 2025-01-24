@@ -2,6 +2,14 @@
 
 This project provides a Flask-based server that emulates OpenAI's function calling/tool use API functionality through prompt engineering and code generation. It allows you to use language models that don't natively support tool use with the OpenAI tool use interface. Compatible with reasoning-focused models like QwQ and R1, as well as any general purpose model with coding ability but lacks native function calling abilities.
 
+⚠️ **WARNING: Early Experimental Project**
+This is a very early experimental project and should not be considered stable or feature-complete:
+- Core functionality is still under development
+- Breaking changes are likely
+- Features are limited and experimental
+- Not recommended for production use
+- Bug reports and contributions welcome, but proceed with caution
+
 ## Features
 
 - 🔄 Drop-in replacement for OpenAI's chat completions API with tool use
@@ -153,6 +161,22 @@ The project enables sophisticated agentic use cases through integration with pop
 The project integrates with popular AI development tools like LangChain for composable applications, LangGraph for multi-agent workflows, and Pydantic for type-safe development - enabling you to build sophisticated AI applications while maintaining compatibility with the broader ecosystem.
 
 This compatibility layer allows you to leverage the growing ecosystem of AI tools while using your preferred language model.
+
+## Examples
+
+The repository includes example implementations in the `examples/` directory:
+
+### PydanticAI Banking Support Agent
+A simple banking support chatbot that demonstrates type-safe tool use with PydanticAI.
+
+To run the examples:
+```bash
+# Install dependencies
+pip install pydantic-ai openai
+
+# Run the example
+python examples/pydanticai.py
+```
 
 ## Security Considerations
 
