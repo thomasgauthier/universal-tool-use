@@ -1,4 +1,4 @@
-# OpenAI Tool Use API Emulator
+# Universal Tool Use
 
 This project provides a Flask-based server that emulates OpenAI's function calling/tool use API functionality through prompt engineering and code generation. It allows you to use language models that don't natively support tool use with the OpenAI tool use interface. Compatible with reasoning-focused models like QwQ and R1, as well as any general purpose model with coding ability but lacks native function calling abilities.
 
@@ -6,7 +6,6 @@ This project provides a Flask-based server that emulates OpenAI's function calli
 
 - 🔄 Drop-in replacement for OpenAI's chat completions API with tool use
 - 🛠️ Supports multiple tool definitions using OpenAI's function schema
-- 🔒 Safe code execution in isolated environments
 - 📝 Automatic Pydantic model generation for parameter validation
 - 🔍 Code extraction and validation
 - 📊 Request/response logging
@@ -176,13 +175,9 @@ Use caution when deploying in production environments. Additional security measu
 ## Limitations
 
 - Relies on LLM's ability to generate valid Python code
-- Tool execution is synchronous
 - Limited error recovery options
 - May require more prompt engineering for complex tools
-
-## License
-
-[License to come]
+- Uses the same prompt for all models and may or may not work well with different models
 
 ## Acknowledgments
 
