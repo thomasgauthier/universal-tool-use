@@ -90,6 +90,22 @@ response = client.chat.completions.create(
 )
 ```
 
+## Examples
+
+The repository includes example implementations in the `examples/` directory:
+
+### PydanticAI Banking Support Agent
+A simple banking support chatbot that demonstrates type-safe tool use with PydanticAI.
+
+To run the examples:
+```bash
+# Install dependencies
+pip install pydantic-ai openai
+
+# Run the example
+python examples/pydanticai.py
+```
+
 ## How It Works
 
 1. **Request Processing**
@@ -161,22 +177,6 @@ The project enables sophisticated agentic use cases through integration with pop
 The project integrates with popular AI development tools like LangChain for composable applications, LangGraph for multi-agent workflows, and Pydantic for type-safe development - enabling you to build sophisticated AI applications while maintaining compatibility with the broader ecosystem.
 
 This compatibility layer allows you to leverage the growing ecosystem of AI tools while using your preferred language model.
-
-## Examples
-
-The repository includes example implementations in the `examples/` directory:
-
-### PydanticAI Banking Support Agent
-A simple banking support chatbot that demonstrates type-safe tool use with PydanticAI.
-
-To run the examples:
-```bash
-# Install dependencies
-pip install pydantic-ai openai
-
-# Run the example
-python examples/pydanticai.py
-```
 
 ## Security Considerations
 
